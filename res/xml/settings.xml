@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:defaultValue="192.168.1.1"
+        android:enabled="true"
+        android:key="host"
+        android:title="host" 
+        android:summary="MQTT broker hostname"
+        />
+    <EditTextPreference
+        android:defaultValue="1883"
+        android:enabled="true"
+        android:key="port"
+        android:title="port" 
+        android:summary="MQTT broker port"
+        android:numeric="integer"
+        />
+    
+    <EditTextPreference
+        android:defaultValue="topic"
+        android:enabled="true"
+        android:key="topic"
+        android:title="topic" 
+        android:summary="subscribe topic name"
+        />
+    
+    <CheckBoxPreference   
+        android:defaultValue="false"
+		android:key="use_auth"   
+		android:title="use auth" 
+		android:summary="use username &amp; password authentication">
+	</CheckBoxPreference>
+    
+    <EditTextPreference
+        android:defaultValue="username"
+        android:enabled="true"
+        android:key="username"
+        android:title="username" 
+        android:summary="username for authentication"
+        />
+
+    <EditTextPreference
+        android:defaultValue="password"
+        android:enabled="true"
+        android:key="password"
+        android:title="password" 
+        android:summary="password for authentication"
+        />
+    
+</PreferenceScreen>
