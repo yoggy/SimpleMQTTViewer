@@ -11,7 +11,7 @@
         android:gravity="left"
         android:singleLine="true"
         android:textColor="#008800"
-        android:textSize="16sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/value"
@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:singleLine="true"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>
