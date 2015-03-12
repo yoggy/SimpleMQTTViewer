@@ -25,9 +25,9 @@ public class Config {
 		return singleton;
 	}
 
-	private SharedPreferences prefs;
+	protected SharedPreferences prefs;
 	
-	private Config(SharedPreferences prefs) {
+	protected Config(SharedPreferences prefs) {
 		this.prefs = prefs;
 	}
 	
