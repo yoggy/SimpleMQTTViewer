@@ -8,6 +8,7 @@
         android:title="host" 
         android:summary="MQTT broker hostname"
         />
+
     <EditTextPreference
         android:defaultValue="1883"
         android:enabled="true"
@@ -22,7 +23,31 @@
         android:enabled="true"
         android:key="topic"
         android:title="topic" 
-        android:summary="subscribe topic name"
+        android:summary="MQTT subscribe topic name"
+        />
+    
+    <CheckBoxPreference   
+        android:defaultValue="true"
+		android:key="clean_session"   
+		android:title="clean_session" 
+		android:summary="MQTT connect options">
+	</CheckBoxPreference>
+    
+    <EditTextPreference
+        android:defaultValue="SimpleMQTTViewer"
+        android:enabled="true"
+        android:key="client_id"
+        android:title="client_id" 
+        android:summary="MQTT connect options"
+        />
+    
+    <EditTextPreference
+        android:defaultValue="1"
+        android:enabled="true"
+        android:key="connection_timeout"
+        android:title="connection_timeout" 
+        android:summary="MQTT connection timeout (unit: second)"
+        android:numeric="integer"
         />
     
     <CheckBoxPreference   
