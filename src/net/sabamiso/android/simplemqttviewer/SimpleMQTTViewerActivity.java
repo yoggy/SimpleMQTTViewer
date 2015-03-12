@@ -3,11 +3,11 @@ package net.sabamiso.android.simplemqttviewer;
 import java.util.ArrayList;
 
 import net.sabamiso.android.util.Config;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -18,9 +18,8 @@ public class SimpleMQTTViewerActivity extends Activity {
 	ArrayList<Item> list;
 	ItemAdapter adapter;
 	ListView  list_view;
+	ActionBar action_bar;
 	
-	Item item_connection_status;
-
 	Handler handler = new Handler();
 	
 	MQTT mqtt;
@@ -32,12 +31,12 @@ public class SimpleMQTTViewerActivity extends Activity {
 
 		mqtt = new MQTT(this);
 		
-		Config.init(this);
+		MyMQTTConfig.init(this);
 
 		setContentView(R.layout.activity_simple_mqttviewer);
 		
-		item_connection_status = new Item("connection status", "disconnect");
-
+		action_bar = getActionBar();
+		
 		list = new ArrayList<Item>();
 		list_view = (ListView) findViewById(R.id.listView);
 		adapter = new ItemAdapter(this, list);
@@ -48,6 +47,8 @@ public class SimpleMQTTViewerActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		setConnectionStatus(false);
+		clear();
 		mqtt.start();
 	}
 
@@ -59,7 +60,6 @@ public class SimpleMQTTViewerActivity extends Activity {
 
 	public void clear() {
 		list.clear();
-		list.add(item_connection_status);
 		adapter.notifyDataSetChanged();
 	}
 	
@@ -74,10 +74,12 @@ public class SimpleMQTTViewerActivity extends Activity {
 			@Override
 			public void run() {
 				if (flag_val == true) {
-					item_connection_status.setValue("connect");
+					action_bar.setLogo(R.drawable.icon_connect);
+					action_bar.setTitle("SimpleMQTTViewer (connected)");
 				}
 				else {
-					item_connection_status.setValue("disconnect");
+					action_bar.setLogo(R.drawable.icon_disconnect);
+					action_bar.setTitle("SimpleMQTTViewer (disconnect)");
 				}
 				adapter.notifyDataSetChanged();
 			}
