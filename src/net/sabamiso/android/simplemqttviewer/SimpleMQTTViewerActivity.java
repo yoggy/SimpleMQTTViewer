@@ -1,8 +1,8 @@
 package net.sabamiso.android.simplemqttviewer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import net.sabamiso.android.util.Config;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 public class SimpleMQTTViewerActivity extends Activity {
 
+	HashMap<String ,Item> map;
 	ArrayList<Item> list;
 	ItemAdapter adapter;
 	ListView  list_view;
@@ -37,10 +38,13 @@ public class SimpleMQTTViewerActivity extends Activity {
 		
 		action_bar = getActionBar();
 		
+		map = new HashMap<String, Item>();
 		list = new ArrayList<Item>();
+		
 		list_view = (ListView) findViewById(R.id.listView);
 		adapter = new ItemAdapter(this, list);
 		list_view.setAdapter(adapter);		
+		
 		clear();
 	}
 
@@ -59,6 +63,7 @@ public class SimpleMQTTViewerActivity extends Activity {
 	}
 
 	public void clear() {
+		map.clear();
 		list.clear();
 		adapter.notifyDataSetChanged();
 	}
@@ -98,7 +103,7 @@ public class SimpleMQTTViewerActivity extends Activity {
 
 			@Override
 			public void run() {
-				adapter.add(new Item(topic, message));
+				updateItem(topic, message);
 			}
 
 		}.setMessage(topic, message));
@@ -123,5 +128,19 @@ public class SimpleMQTTViewerActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void updateItem(String topic, String message) {
+		if (map.keySet().contains(topic)) {
+			Item item = map.get(topic);
+			item.setValue(message);
+			adapter.notifyDataSetChanged();
+		}
+		else {		
+			Item item = new Item(topic, message);
+			map.put(topic, item);
+			list.add(item);
+			adapter.notifyDataSetChanged();
+		}
 	}
 }
