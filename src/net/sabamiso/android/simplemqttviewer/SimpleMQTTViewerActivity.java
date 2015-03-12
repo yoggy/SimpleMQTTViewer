@@ -24,6 +24,7 @@ public class SimpleMQTTViewerActivity extends Activity {
 	Handler handler = new Handler();
 	
 	MQTT mqtt;
+	MyMQTTConfig config;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class SimpleMQTTViewerActivity extends Activity {
 		mqtt = new MQTT(this);
 		
 		MyMQTTConfig.init(this);
-
+		config = MyMQTTConfig.getInstance();
+		
 		setContentView(R.layout.activity_simple_mqttviewer);
 		
 		action_bar = getActionBar();
@@ -80,11 +82,11 @@ public class SimpleMQTTViewerActivity extends Activity {
 			public void run() {
 				if (flag_val == true) {
 					action_bar.setLogo(R.drawable.icon_connect);
-					action_bar.setTitle("SimpleMQTTViewer (connected)");
+					action_bar.setTitle("connected, host=" + config.getHost());
 				}
 				else {
 					action_bar.setLogo(R.drawable.icon_disconnect);
-					action_bar.setTitle("SimpleMQTTViewer (disconnect)");
+					action_bar.setTitle("disconnect...");
 				}
 				adapter.notifyDataSetChanged();
 			}

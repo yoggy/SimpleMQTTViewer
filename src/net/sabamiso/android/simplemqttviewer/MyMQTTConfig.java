@@ -21,19 +21,25 @@ public class MyMQTTConfig extends Config {
 		super(prefs);
 	}
 
-	public String getClientId() {		
-		return getString("client_id", "SimpleMQTTViewer");
+	public String getHost() {
+		return getString("host", "iot.eclipse.org");
 	}
 
+	public int getPort() {
+		return getInt("port", 1883);
+	}
+	
 	public String getUrl() {
-		String host = getString("host", "iot.eclipse.org");
-		int port = getInt("port", 1883);
-		String url = "tcp://" + host + ":" + port;
+		String url = "tcp://" + getHost() + ":" + getPort();
 		return url;
 	}
 
 	public String getTopic() {
 		return getString("topic", "topic");
+	}
+
+	public String getClientId() {		
+		return getString("client_id", "SimpleMQTTViewer");
 	}
 
 	public boolean getCleanSession() {
