@@ -1,6 +1,8 @@
 package net.sabamiso.android.simplemqttviewer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import android.app.ActionBar;
@@ -142,7 +144,9 @@ public class SimpleMQTTViewerActivity extends Activity {
 			Item item = new Item(topic, message);
 			map.put(topic, item);
 			list.add(item);
+			Collections.sort(list, new ItemComparator());
 			adapter.notifyDataSetChanged();
 		}
 	}
 }
+
