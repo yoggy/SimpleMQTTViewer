@@ -63,6 +63,40 @@ public class MyMQTTConfig extends Config {
 	}
 
 	public int getConnectionTimeout() {
-		return getInt("connection_timeout", 1);
+		return getInt("connection_timeout", 5);
+	}
+	
+	public String getLastPublishTopic() {
+		return getString("last_publish_topic", "topic");
+	}
+
+	public void setLastPublishTopic(String val) {
+		if (val == "") {
+			setString("last_publish_topic", "topic");
+		}
+		else {
+			setString("last_publish_topic", val);
+		}
+	}
+
+	public String getLastPublishMessage() {
+		return getString("last_publish_message", "message");
+	}
+	
+	public void setLastPublishMessage(String val) {
+		if (val == "") {
+			setString("last_publish_message", "");
+		}
+		else {
+			setString("last_publish_message", val);
+		}
+	}
+
+	public boolean getLastPublishRetained() {
+		return getBoolean("last_publish_retained", false);
+	}
+
+	public void setLastPublishRetained(boolean flag) {
+		setBoolean("last_publish_retained", flag);
 	}
 }

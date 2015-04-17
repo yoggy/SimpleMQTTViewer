@@ -1,7 +1,5 @@
 package net.sabamiso.android.simplemqttviewer;
 
-import java.util.Arrays;
-
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -16,10 +14,10 @@ class MQTTThread extends Thread implements MqttCallback {
 
 	MqttClient client;
 	MemoryPersistence persistence = new MemoryPersistence();
-    MqttConnectOptions opts = new MqttConnectOptions();
-    
-    MyMQTTConfig config;
-	
+	MqttConnectOptions opts = new MqttConnectOptions();
+
+	MyMQTTConfig config;
+
 	public MQTTThread(SimpleMQTTViewerActivity activity) {
 		this.activity = activity;
 		this.config = MyMQTTConfig.getInstance();
@@ -29,27 +27,30 @@ class MQTTThread extends Thread implements MqttCallback {
 	public void setBreakFlag(boolean val) {
 		break_flag = val;
 	}
-	
+
 	boolean isConnect() {
-		if (client == null) return false;
+		if (client == null)
+			return false;
 		if (client.isConnected() == false) {
 			disconnect();
 			return false;
 		}
 		return true;
 	}
-	
+
 	boolean connect() {
-		if (client != null) return true;
-		
+		if (client != null)
+			return true;
+
 		try {
-			client = new MqttClient(config.getUrl(), config.getClientId(), persistence);
+			client = new MqttClient(config.getUrl(), config.getClientId(),
+					persistence);
 			opts.setCleanSession(config.getCleanSession());
 			opts.setConnectionTimeout(config.getConnectionTimeout());
 			if (config.getUseAuthentication()) {
 				opts.setUserName(config.getUsername());
-				
-				char [] pass = config.getPassword();
+
+				char[] pass = config.getPassword();
 				opts.setPassword(pass);
 			}
 			client.connect(opts);
@@ -60,12 +61,12 @@ class MQTTThread extends Thread implements MqttCallback {
 			client = null;
 			return false;
 		}
-		
+
 		activity.setConnectionStatus(true);
-		
+
 		return true;
 	}
-	
+
 	void disconnect() {
 		if (client != null) {
 			try {
@@ -78,10 +79,10 @@ class MQTTThread extends Thread implements MqttCallback {
 
 		activity.setConnectionStatus(false);
 	}
-	
+
 	@Override
 	public void run() {
-		while(!break_flag) {
+		while (!break_flag) {
 			if (isConnect() == false) {
 				connect();
 			}
@@ -93,7 +94,7 @@ class MQTTThread extends Thread implements MqttCallback {
 		}
 		disconnect();
 	}
-	
+
 	public void quit() {
 		break_flag = true;
 		disconnect();
@@ -119,6 +120,25 @@ class MQTTThread extends Thread implements MqttCallback {
 	public void messageArrived(String topic, MqttMessage msg) throws Exception {
 		activity.onReceiveMessage(topic, msg.toString());
 	}
+
+	public boolean publish(String topic, String message, boolean retained, int qos) {
+		if (isConnect() == false) return false;
+		if (qos < 0 || 2 < qos) return false;
+		if (message == null) return false;
+		
+		try {
+			MqttMessage mqtt_msg = new MqttMessage();
+			mqtt_msg.setPayload(message.getBytes());
+			mqtt_msg.setRetained(retained);
+			mqtt_msg.setQos(qos);
+			client.publish(topic, mqtt_msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return false;
+	}
 }
 
 public class MQTT {
@@ -138,10 +158,21 @@ public class MQTT {
 	}
 
 	void stop() {
-		if (thread == null) return;
-		
+		if (thread == null)
+			return;
+
 		thread.quit();
 		thread = null;
 	}
 
+	public boolean isConnect() {
+		if (thread == null)
+			return false;
+		return thread.isConnect();
+	}
+
+	public boolean publish(String topic, String message, boolean retained, int qos) {
+		if (thread == null) return false;
+		return thread.publish(topic, message, retained, qos);
+	}
 }

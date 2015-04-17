@@ -3,14 +3,20 @@
     tools:context="net.sabamiso.android.simplemqttviewer.SimpleMQTTViewerActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_publish_message"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+        android:title="@string/action_publish_message"/>
+    
     <item
         android:id="@+id/action_clear"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_clear"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
 </menu>
