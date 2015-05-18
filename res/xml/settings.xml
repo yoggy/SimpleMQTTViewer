@@ -23,7 +23,7 @@
         android:enabled="true"
         android:key="topic"
         android:title="topic" 
-        android:summary="MQTT subscribe topic name"
+        android:summary="MQTT subscribe topic name. If you want to subscribe to multiple topics, please enter topic names with comma separated."
         />
     
     <CheckBoxPreference   

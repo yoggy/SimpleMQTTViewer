@@ -1,5 +1,7 @@
 package net.sabamiso.android.simplemqttviewer;
 
+import java.util.Vector;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -34,8 +36,43 @@ public class MyMQTTConfig extends Config {
 		return url;
 	}
 
-	public String getTopic() {
-		return getString("topic", "topic");
+	public String [] getTopic() {
+		String default_value = "topic";
+		
+		String str = getString("topic", default_value);
+		String [] strs = str.split(",", 0);
+		
+		if (strs == null || strs.length == 0 || "".equals(strs[0]) ) {
+			setDefaultTopic(default_value);
+			String [] res = new String[1];
+			res[0] = default_value;
+			return res;
+		}
+		
+		Vector<String> v = new Vector<String>();
+		for (int i = 0; i < strs.length; ++i) {
+			if (strs[i] == null) continue;
+			
+			strs[i] = strs[i].trim();
+			if (strs[i].length() == 0) continue;
+			
+			v.add(strs[i]);
+		}
+
+		if (v.size() == 0) {
+			setDefaultTopic(default_value);
+			String [] res = new String[1];
+			res[0] = default_value;
+			return res;
+		}
+		
+		String [] res = v.toArray(new String[0]);
+		
+		return res;
+	}
+
+	private void setDefaultTopic(String val) {
+		setString("topic", val);
 	}
 
 	public String getClientId() {		
